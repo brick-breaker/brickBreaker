@@ -9,6 +9,10 @@ import java.awt.Graphics;
 // width of each rectangle 50
 public class GameWindow extends JFrame {
 
+    int xTopLeft = 0;
+    int yTopLeft = 0;
+
+
     public GameWindow() {
             super("canvas");
 
@@ -18,10 +22,30 @@ public class GameWindow extends JFrame {
                 // paint the canvas
                 public void paint(Graphics g)
                 {
-                    for(int i = 0; i < level1.length; i++){
-                        for(int j = 0; j < colors.length[0]; j++){
+                    for(int i = 0; i < level1().length; i++){
+                        for(int j = 0; j < level1()[0].length; j++){
+
+                            if(level1()[i][j] == 0)
+                                g.setColor(Color.white);
+                            if(level1()[i][j] == 1)
+                                g.setColor(Color.magenta);
+                            if(level1()[i][j] == 2)
+                                g.setColor(Color.red);
+                            if(level1()[i][j] == 3)
+                                g.setColor(Color.green);
+                            if(level1()[i][j] == 4)
+                                g.setColor(Color.orange);
+                            if(level1()[i][j] == 5)
+                                g.setColor(Color.blue);
+                            if(level1()[i][j] == 6)
+                                g.setColor(Color.yellow);
+
+                            g.fillRect(xTopLeft, yTopLeft, 102, 50);
+                            xTopLeft = xTopLeft + 102;
 
                         }
+                        yTopLeft = yTopLeft + 50;
+                        xTopLeft = 0;
                     }
 
                     // set color to red
@@ -39,7 +63,7 @@ public class GameWindow extends JFrame {
             c.setBackground(Color.black);
 
             add(c);
-            setSize(1440, 900);
+            setSize(1445, 900);
             show();
     }
 

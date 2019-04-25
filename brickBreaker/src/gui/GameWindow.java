@@ -11,7 +11,7 @@ public class GameWindow extends JFrame {
 
     int xTopLeft = 0;
     int yTopLeft = 0;
-
+    int[][] blockLocations = new int[14][6];
 
     public GameWindow() {
             super("canvas");
@@ -42,11 +42,15 @@ public class GameWindow extends JFrame {
 
                             g.fillRect(xTopLeft, yTopLeft, 102, 50);
                             xTopLeft = xTopLeft + 102;
+                            // Goal is to create the length of each block with
+
 
                         }
                         yTopLeft = yTopLeft + 50;
                         xTopLeft = 0;
                     }
+
+
 
                     // set color to red
                     //g.setColor(Color.red);
@@ -57,13 +61,15 @@ public class GameWindow extends JFrame {
                     // draw a string
                     //g.drawString("This is a canvas", 100, 100);
                 }
+
+
             };
 
             // set background
             c.setBackground(Color.black);
 
             add(c);
-            setSize(1445, 900);
+            setSize(1428, 900);
             show();
     }
 

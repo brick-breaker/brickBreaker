@@ -70,7 +70,7 @@ make
 sudo make install
 ```
 
-And it's installed! Now anytime you open up your console, you can simply type "christmas" and find out how many eves it is!
+And it's installed! Now you can break bricks whenever you please.
 
 ## Authors
 
@@ -78,7 +78,7 @@ And it's installed! Now anytime you open up your console, you can simply type "c
 * **Sam Olsen** - *Idea* - [Olsen031](https://github.com/Olsen031)
 
 
-See also the list of [contributors](https://github.com/CThompson01/brick-breaker/graphs/contributors) who participated in this project.
+See also the list of [contributors](????) who participated in this project.
 
 ## License
 

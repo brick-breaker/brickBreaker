@@ -78,7 +78,7 @@ And it's installed! Now anytime you open up your console, you can simply type "c
 * **Sam Olsen** - *Idea* - [Olsen031](https://github.com/Olsen031)
 
 
-See also the list of [contributors](https://github.com/CThompson01/christmas-eve-eve/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/CThompson01/brick-breaker/graphs/contributors) who participated in this project.
 
 ## License
 

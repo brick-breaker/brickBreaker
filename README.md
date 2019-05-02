@@ -75,7 +75,7 @@ And it's installed! Now anytime you open up your console, you can simply type "c
 ## Authors
 
 * **Chase Thompson** - *Main Developer* - [CThompson01](https://github.com/CThompson01)
-* **Sam Olsen** - *Idea* - [bqrichards](https://github.com/bqrichards)
+* **Sam Olsen** - *Idea* - [Olsen031](https://github.com/Olsen031)
 
 
 See also the list of [contributors](https://github.com/CThompson01/christmas-eve-eve/graphs/contributors) who participated in this project.
@@ -86,5 +86,5 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## Acknowledgments
 
-* Brandon Richards for the idea at 1:06 am on Monday, December 24, 2018
+* Sam Olsen for the idea at 1:06 am on Friday, April 19, 2019
 * Billie Thompson for README.md Template

@@ -26,6 +26,8 @@ public class BrickBreakerGame {
     private final int ROWS_OF_BRICKS = 5;
     private final int COLS_OF_BRICKS = 10;
 
+    final Color[] colors = {Color.RED, Color.PINK, Color.CYAN, Color.GREEN, Color.YELLOW};
+
     BrickBreakerGame(Canvas gameCanvas) {
         this.gameCanvas = gameCanvas;
         renderer = new EngineRender(gameCanvas);
@@ -134,6 +136,9 @@ public class BrickBreakerGame {
 
                             // Updates the score
                             playerPaddle.score++;
+
+                            // Resets blocks if all of the blocks are destroyed
+                            checkBlocks();
                         }
                     }
                 }
@@ -159,8 +164,16 @@ public class BrickBreakerGame {
     private void handleDeath() {
         if (playerPaddle.lives < 2)
             restart(true);
-        else
+        else {
             restart(false);
+            playerPaddle.lives--;
+        }
+    }
+
+    private void checkBlocks() {
+        if (playerPaddle.score % 50 == 0) {
+           restart(false);
+        }
     }
 
     /**
@@ -189,7 +202,7 @@ public class BrickBreakerGame {
                             (gameCanvas.getWidth() / COLS_OF_BRICKS), gameCanvas.getHeight() / 20);
                     brick[i][x].setPosition(1 + i + (brick[i][x].getWidth() * i),
                             x + brick[i][x].getHeight() * x);
-                    brick[i][x].setColor(Color.RED);
+                    brick[i][x].setColor(colors[x]);
                 }
             }
         }
@@ -198,12 +211,10 @@ public class BrickBreakerGame {
         if (isDead) {
             playerPaddle = new Paddle((gameCanvas.getWidth() / 2), gameCanvas.getHeight() - 25,
                     gameCanvas.getWidth() / 5, 25);
-            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), 0);
+            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), -4);
         } else {
             playerPaddle.setPosition((gameCanvas.getWidth() / 2), gameCanvas.getHeight() - 25);
-            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), 0);
-
-            playerPaddle.lives--;
+            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), -4);
         }
     }
 

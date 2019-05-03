@@ -10,6 +10,7 @@ public class BrickBreakerWindow extends JFrame implements KeyListener {
     private BrickBreakerGame game;
 
     public BrickBreakerWindow() {
+        // Creates and sets up parameters for the window
         setTitle("Brick Breaker");
         setSize(new Dimension(1024,576));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,7 +24,7 @@ public class BrickBreakerWindow extends JFrame implements KeyListener {
         gameCanvas.createBufferStrategy(3);
         gameCanvas.requestFocus();
 
-
+        // Initializes the game
         game = new BrickBreakerGame(gameCanvas);
     }
 
@@ -42,12 +43,14 @@ public class BrickBreakerWindow extends JFrame implements KeyListener {
         int keyPressed = keyEvent.getKeyCode();
         if (keyPressed == 65) // Move Left
             game.setMovement('l');
-        if (keyPressed == 68) // Move Right
+        else if (keyPressed == 68) // Move Right
             game.setMovement('r');
-        if (keyPressed == 87)
+        if (keyPressed == 87) // Launches the ball
             game.launchBall();
-        if (keyPressed == 82)
-            game.restart();
+        if (keyPressed == 82) // Restarts the game
+            game.restart(true);
+        if (keyPressed == 72) // Brings up the highscore menu
+            game.showHighscores();
     }
 
     @Override

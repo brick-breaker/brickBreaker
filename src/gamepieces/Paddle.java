@@ -1,9 +1,11 @@
 package gamepieces;
 
 public class Paddle extends Gamepiece {
+    public int score;
     public boolean moveRight,moveLeft;
     public double dx;
     public final double MAX_SPEED = 15;
+    public int lives = 3;
 
     public Paddle() {
         super();
@@ -19,5 +21,7 @@ public class Paddle extends Gamepiece {
         moveRight = false;
         moveLeft = false;
         dx = 0;
+        score = 0;
+        lives = 3;
     }
 }

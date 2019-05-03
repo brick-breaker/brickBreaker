@@ -87,4 +87,5 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## Acknowledgments
 
 * Sam Olsen for the idea at 1:06 am on Friday, April 19, 2019
-* Billie Thompson for README.md Template
+* Chase Thompson for figuring out the collisions of the bricks and much much more. 
+

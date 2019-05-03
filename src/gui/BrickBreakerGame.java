@@ -3,6 +3,7 @@ package gui;
 import gamepieces.Ball;
 import gamepieces.Brick;
 import gamepieces.Paddle;
+import main.SaveLoad;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class BrickBreakerGame {
     // Game Engine
     private EngineRender renderer;
     private Canvas gameCanvas;
-    private final int FPS = 30;
+    private final int FPS = 120;
 
     // Game Pieces
     private Paddle playerPaddle;
@@ -29,7 +30,7 @@ public class BrickBreakerGame {
         this.gameCanvas = gameCanvas;
         renderer = new EngineRender(gameCanvas);
 
-        restart();
+        restart(true);
 
         Timer gameTimer = new Timer(1000/FPS, new ActionListener() {
             @Override
@@ -79,26 +80,29 @@ public class BrickBreakerGame {
         int botOfBall = ball.getY() + ball.getHeight();
         int leftOfBall = ball.getX();
         int rightOfBall = ball.getX() + ball.getWidth();
+        int centerOfBall = ball.getY() + (ball.getHeight() / 2);
 
         // Checks for collision with the walls
         if (leftOfBall <= 0) {
-            ball.dx = -ball.dx;
+            ball.dx = 3;
         } else if (rightOfBall >= gameCanvas.getWidth()) {
-            ball.dx = -ball.dx;
+            ball.dx = -3;
         }
 
         // Checks for collision with ceiling
         if (topOfBall <= 0) {
-            ball.dy = -ball.dy;
+            ball.dy = 3;
         } else if (botOfBall >= gameCanvas.getHeight())
-            restart();
+            handleDeath();
 
         // Checks for contact with the paddle
         if (botOfBall >= playerPaddle.getY() &&
                 leftOfBall < playerPaddle.getX() + playerPaddle.getWidth() &&
                 rightOfBall > playerPaddle.getX()) {
-            ball.dy = -ball.dy;
-            ball.dx = ((ball.dx > 0 && playerPaddle.dx > 0)||(ball.dx < 0 && playerPaddle.dx < 0)?ball.dx:-ball.dx);
+            ball.dy = -3;
+            ball.dx = ((ball.dx > 0 && playerPaddle.dx > 0)||
+                    (ball.dx < 0 && playerPaddle.dx < 0) ||
+                    playerPaddle.dx == 0 ?ball.dx:-ball.dx);
         }
 
         // Checks for collision with the ball and the bricks
@@ -110,20 +114,26 @@ public class BrickBreakerGame {
                                 botOfBall >= col.getY() &&
                                 leftOfBall < col.getX() + col.getWidth() &&
                                 rightOfBall > col.getX()) {
+                            // Destroys the cube that the ball is in contact with
                             col.isDestroyed = true;
 
-                            if (topOfBall > col.getY()) {
+                            // Maths to figure out which way the ball should bounce
+                            if (centerOfBall > col.getY() && centerOfBall < col.getY() + col.getHeight()) {
+                                if (leftOfBall > col.getX()) { // The ball is on the right side
+                                    ball.dx = 3;
+                                } else { // The ball is on the left side
+                                    ball.dx = -3;
+                                }
+                            } else if (topOfBall > col.getY()) {
                                 // If the top of the ball is > the top of the cube it hit the bottom
-                                ball.dy = 0.3 * FPS;
+                                ball.dy = 3;
                             } else {
                                 // Otherwise the ball hit the top of the cube
-                                ball.dy = -0.3 * FPS;
+                                ball.dy = -3;
                             }
 
-                            if (leftOfBall > col.getX()) {
-                                // If the left of the ball is farther to the right than the left of the cube
-                                // The ball hit the right side of the cube
-                            }
+                            // Updates the score
+                            playerPaddle.score++;
                         }
                     }
                 }
@@ -142,31 +152,99 @@ public class BrickBreakerGame {
 
     void launchBall() {
         ball.isLaunched = true;
-        ball.dx = 0.3 * FPS;
-        ball.dy = 0.3 * FPS;
+        ball.dx = 3;
+        ball.dy = 3;
     }
 
-    void restart() {
-        // Initializes Paddle
-        playerPaddle = new Paddle((gameCanvas.getWidth()/2),gameCanvas.getHeight()-25,
-                gameCanvas.getWidth()/5,25);
-        playerPaddle.translatePosition(-(playerPaddle.getWidth()/2),0);
+    private void handleDeath() {
+        if (playerPaddle.lives < 2)
+            restart(true);
+        else
+            restart(false);
+    }
+
+    /**
+     * Resets the board for when the character dies
+     * @param isDead Whether the character has lost every life
+     *               TRUE - resets the lives and the score counter along with positions
+     *               FALSE - resets just the positioning of the paddle and ball
+     */
+    void restart(boolean isDead) {
 
         // Initializes Ball
         ball = new Ball();
         ball.setPosition((gameCanvas.getWidth()/2) - ball.getWidth()/2,
                 gameCanvas.getHeight()-50);
 
-        // Initializes Bricks
-        brick = new Brick[COLS_OF_BRICKS][ROWS_OF_BRICKS];
-        for (int i = 0; i < brick.length; i++) {
-            for (int x = 0; x < brick[i].length; x++) {
-                brick[i][x] = new Brick(0,0,
-                        (gameCanvas.getWidth()/COLS_OF_BRICKS),gameCanvas.getHeight()/20);
-                brick[i][x].setPosition(1+i+(brick[i][x].getWidth()*i),
-                        x+brick[i][x].getHeight()*x);
-                brick[i][x].setColor(Color.RED);
+        // Handles fully resetting the game if the player has lost all of their lives
+        if (isDead) {
+            // Saves the highscores
+            updateHighScores();
+
+            // Initializes Bricks
+            brick = new Brick[COLS_OF_BRICKS][ROWS_OF_BRICKS];
+            for (int i = 0; i < brick.length; i++) {
+                for (int x = 0; x < brick[i].length; x++) {
+                    brick[i][x] = new Brick(0, 0,
+                            (gameCanvas.getWidth() / COLS_OF_BRICKS), gameCanvas.getHeight() / 20);
+                    brick[i][x].setPosition(1 + i + (brick[i][x].getWidth() * i),
+                            x + brick[i][x].getHeight() * x);
+                    brick[i][x].setColor(Color.RED);
+                }
             }
         }
+
+        // Initializes Paddle
+        if (isDead) {
+            playerPaddle = new Paddle((gameCanvas.getWidth() / 2), gameCanvas.getHeight() - 25,
+                    gameCanvas.getWidth() / 5, 25);
+            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), 0);
+        } else {
+            playerPaddle.setPosition((gameCanvas.getWidth() / 2), gameCanvas.getHeight() - 25);
+            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), 0);
+
+            playerPaddle.lives--;
+        }
+    }
+
+    private void updateHighScores() {
+        // Checks to make sure the paddle object is created
+        if (playerPaddle != null) {
+            int[] highscores = SaveLoad.loadScores();
+            int[] updatedHighscores = new int[10];
+
+            // Iterates through the current high scores
+            for (int i = 0; i < highscores.length; i++) {
+                // Checks if the current score is greater than the score being checked
+                if (playerPaddle.score > highscores[i]) {
+                    // Sets the updated score in the parallel array
+                    updatedHighscores[i] = playerPaddle.score;
+                    // Bumps the rest of the scores down
+                    for (int x = i+1; x < updatedHighscores.length; x++) {
+                        updatedHighscores[x] = highscores[x-1];
+                    }
+                    break;
+                } else {
+                    updatedHighscores[i] = highscores[i];
+                }
+            }
+
+            // Actually pushes the update to the file
+            SaveLoad.saveScores(updatedHighscores);
+
+            // Displays the highscores
+            showHighscores();
+        }
+    }
+
+    void showHighscores() {
+        int[] highscores = SaveLoad.loadScores();
+        String scores = "";
+
+        for (int score : highscores) {
+            scores += score + "\n";
+        }
+
+        JOptionPane.showMessageDialog(gameCanvas, "The Highscores!\n" + scores);
     }
 }

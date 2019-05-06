@@ -6,6 +6,12 @@ The inspiration from this project came from traditional brick breaker games, whi
 
 ![GitHub Logo](UML.PNG)
 
+## Controls
+*A and D move the paddle
+*W launches the ball as well as slams it back toward the paddle
+*R restarts the game
+*ESC pauses and unpauses the game
+
 ## Getting Started
 
 Follow these instructions to download a release version of this program and to learn how to install it.

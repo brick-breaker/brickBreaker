@@ -4,7 +4,7 @@ The inspiration from this project came from traditional brick breaker games, whi
 
 ### UML
 
-![GitHub Logo](UML.png)
+![GitHub Logo](UML.PNG)
 
 ## Getting Started
 

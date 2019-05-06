@@ -1,6 +1,7 @@
 # Brick Breaker
 
-The inspiration from this project came from traditional brick breaker games, which we wanted a challenge in creating a classic game. 
+The inspiration from this project came from traditional brick breaker games, except we wanted to make our bricks colorful. 
+
 
 ### UML
 

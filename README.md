@@ -22,14 +22,14 @@ Current versions work on all platforms.
 
 <br>
 
-You can download the Repository from [here](https://github.com/brick-breaker/brickBreaker/releases)
+You can download the Repository from [here](https://github.com/brick-breaker/brickBreaker/releases).
 
 
 
 ### Installing
 
 Follow these instructions to unpackage and install releases found on our [release page](https://github.com/brick-breaker/brickBreaker/releases).
-[Latest Stable Release](https://github.com/CThompson01/christmas-eve-eve/releases/tag/v0.1.1-alpha)
+
 
 
 Navigate to your download location. Typically in your downloads folder.

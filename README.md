@@ -2,6 +2,10 @@
 
 The inspiration from this project came from traditional brick breaker games, which we wanted a challenge in creating a classic game. 
 
+### UML
+
+This [link](https://www.draw.io/?state=%7B%22ids%22:%5B%221ACvVyYMC7XFbk2h1SQ2YdUJibD6fHr_b%22%5D,%22action%22:%22open%22,%22userId%22:%22113226590037905767759%22%7D#G1ACvVyYMC7XFbk2h1SQ2YdUJibD6fHr_b) will take you to our UML.
+
 ## Getting Started
 
 Follow these instructions to download a release version of this program and to learn how to install it.

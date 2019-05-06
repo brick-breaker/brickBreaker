@@ -26,6 +26,10 @@ public class BrickBreakerGame {
     private final int ROWS_OF_BRICKS = 5;
     private final int COLS_OF_BRICKS = 10;
 
+    final Color[] colors = {Color.RED, Color.PINK, Color.CYAN, Color.GREEN, Color.YELLOW};
+
+    public boolean isActive = true;
+
     BrickBreakerGame(Canvas gameCanvas) {
         this.gameCanvas = gameCanvas;
         renderer = new EngineRender(gameCanvas);
@@ -35,8 +39,12 @@ public class BrickBreakerGame {
         Timer gameTimer = new Timer(1000/FPS, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                tick();
-                render();
+                if (isActive) {
+                    tick();
+                    render();
+                } else {
+                    renderer.renderPauseScreen();
+                }
             }
         });
 
@@ -134,6 +142,9 @@ public class BrickBreakerGame {
 
                             // Updates the score
                             playerPaddle.score++;
+
+                            // Resets blocks if all of the blocks are destroyed
+                            checkBlocks();
                         }
                     }
                 }
@@ -159,8 +170,16 @@ public class BrickBreakerGame {
     private void handleDeath() {
         if (playerPaddle.lives < 2)
             restart(true);
-        else
+        else {
             restart(false);
+            playerPaddle.lives--;
+        }
+    }
+
+    private void checkBlocks() {
+        if (playerPaddle.score % 50 == 0) {
+           initBricks();
+        }
     }
 
     /**
@@ -182,29 +201,50 @@ public class BrickBreakerGame {
             updateHighScores();
 
             // Initializes Bricks
-            brick = new Brick[COLS_OF_BRICKS][ROWS_OF_BRICKS];
-            for (int i = 0; i < brick.length; i++) {
-                for (int x = 0; x < brick[i].length; x++) {
-                    brick[i][x] = new Brick(0, 0,
-                            (gameCanvas.getWidth() / COLS_OF_BRICKS), gameCanvas.getHeight() / 20);
-                    brick[i][x].setPosition(1 + i + (brick[i][x].getWidth() * i),
-                            x + brick[i][x].getHeight() * x);
-                    brick[i][x].setColor(Color.RED);
-                }
-            }
+            initBricks();
         }
 
         // Initializes Paddle
         if (isDead) {
             playerPaddle = new Paddle((gameCanvas.getWidth() / 2), gameCanvas.getHeight() - 25,
                     gameCanvas.getWidth() / 5, 25);
-            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), 0);
+            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), -4);
         } else {
             playerPaddle.setPosition((gameCanvas.getWidth() / 2), gameCanvas.getHeight() - 25);
-            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), 0);
-
-            playerPaddle.lives--;
+            playerPaddle.translatePosition(-(playerPaddle.getWidth() / 2), -4);
         }
+    }
+
+    private void initBricks() {
+        brick = new Brick[COLS_OF_BRICKS][ROWS_OF_BRICKS];
+        for (int i = 0; i < brick.length; i++) {
+            for (int x = 0; x < brick[i].length; x++) {
+                brick[i][x] = new Brick(0, 0,
+                        (gameCanvas.getWidth() / COLS_OF_BRICKS), gameCanvas.getHeight() / 20);
+                brick[i][x].setPosition(1 + i + (brick[i][x].getWidth() * i),
+                        x + brick[i][x].getHeight() * x);
+                brick[i][x].setColor(colors[x]);
+            }
+        }
+    }
+
+    public void pause() {
+        isActive = false;
+    }
+
+    public void unpause() {
+        isActive = true;
+    }
+
+    public void pausing() {
+        if (isActive)
+            isActive = false;
+        else
+            isActive = true;
+    }
+
+    void growSize() {
+        ball.setSize(ball.getWidth() + 1);
     }
 
     private void updateHighScores() {
@@ -246,5 +286,7 @@ public class BrickBreakerGame {
         }
 
         JOptionPane.showMessageDialog(gameCanvas, "The Highscores!\n" + scores);
+
+        pause();
     }
 }

@@ -41,16 +41,22 @@ public class BrickBreakerWindow extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         int keyPressed = keyEvent.getKeyCode();
-        if (keyPressed == 65) // Move Left
+        if (keyPressed == KeyEvent.VK_A || keyPressed == KeyEvent.VK_KP_LEFT) // Move Left
             game.setMovement('l');
-        else if (keyPressed == 68) // Move Right
+        else if (keyPressed == KeyEvent.VK_D || keyPressed == KeyEvent.VK_KP_RIGHT) // Move Right
             game.setMovement('r');
-        if (keyPressed == 87) // Launches the ball
+        if (keyPressed == KeyEvent.VK_W) // Launches the ball
             game.launchBall();
-        if (keyPressed == 82) // Restarts the game
+        if (keyPressed == KeyEvent.VK_R) // Restarts the game
             game.restart(true);
-        if (keyPressed == 72) // Brings up the highscore menu
+        if (keyPressed == KeyEvent.VK_H) // Brings up the highscore menu
             game.showHighscores();
+        if (keyPressed == KeyEvent.VK_ENTER) // Enter pressed
+            game.unpause();
+        if (keyPressed == KeyEvent.VK_ESCAPE) // ESC pressed pause and unpause
+            game.pausing();
+        if (keyPressed == KeyEvent.VK_P)
+            game.growSize();
     }
 
     @Override

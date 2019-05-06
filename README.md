@@ -12,17 +12,12 @@ Follow these instructions to download a release version of this program and to l
 
 ### Prerequisites
 
-Current versions work exclusively on Linux.
-
-Please be patient as release versions are coming for Windows.
+Current versions work on all platforms.
 
 <br>
 
-It is possible to compile the main.c file for use on Windows.
-
 You can download the Repository from [here](https://github.com/brick-breaker/brickBreaker/tree/chase-development)
 
-Follow [these instructions](https://docs.microsoft.com/en-us/cpp/build/walkthrough-compile-a-c-program-on-the-command-line?view=vs-2017) to compile the file with Visual Studios
 
 
 ### Installing

@@ -103,4 +103,9 @@ public abstract class Gamepiece {
     public int getHeight() {
         return height;
     }
+
+    public void setSize(int size) {
+        width = size;
+        height = size;
+    }
 }

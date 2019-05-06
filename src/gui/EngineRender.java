@@ -81,6 +81,23 @@ public class EngineRender {
                     canvas.getHeight() - 20, 15,15);
         }
 
+        graphics.dispose();
+
+        bufferStrat.show();
+
+        // Flushes out the graphics, reduces lag on some linux systems
+        Toolkit.getDefaultToolkit().sync();
+    }
+
+    public void renderPauseScreen() {
+        // Sets up the graphics system
+        graphics = (Graphics2D)bufferStrat.getDrawGraphics();
+
+        // Clears the screen to prepare for redrawing
+        clear();
+
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press \"Enter\" to Resume", (canvas.getWidth()/2)-100, canvas.getHeight()/2);
 
         graphics.dispose();
 

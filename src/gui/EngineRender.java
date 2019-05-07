@@ -1,9 +1,6 @@
 package gui;
 
-import gamepieces.Ball;
-import gamepieces.Brick;
-import gamepieces.Gamepiece;
-import gamepieces.Paddle;
+import gamepieces.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -14,6 +11,8 @@ public class EngineRender {
     private BufferStrategy bufferStrat;
     private Graphics2D graphics;
 
+    private Star[][] backgroundPieces = new Star[20][5];
+
     /**
      * Initializes the renderer engine
      * @param c The canvas from the other classes
@@ -21,6 +20,10 @@ public class EngineRender {
     EngineRender(Canvas c) {
         this.canvas = c;
         bufferStrat = canvas.getBufferStrategy();
+    }
+
+    void updateBackground(Star[][] stars) {
+        backgroundPieces = stars;
     }
 
     /**
@@ -39,6 +42,10 @@ public class EngineRender {
         /////////////////////
         // Draw Stuff Here //
         /////////////////////
+
+        for (Star[] starRow : backgroundPieces)
+            for (Star star : starRow)
+                render(star);
 
         // Renders the balls shadow
         renderShadow(ball, Color.DARK_GRAY, 1, true);
@@ -130,6 +137,12 @@ public class EngineRender {
             graphics.fillRect(gamepiece.getX(), gamepiece.getY(), gamepiece.getWidth(), gamepiece.getHeight());
     }
 
+    /**
+     * Renders a shadow of a gamepiece object
+     * @param gamepiece The gamepiece to render a shadow for
+     * @param color The color of the shadow
+     * @param offset The offset of the shadow
+     */
     private void renderShadow(Gamepiece gamepiece, Color color, int offset) {
         graphics.setColor(color);
         graphics.fillRect(gamepiece.getX() + offset, gamepiece.getY() + offset,

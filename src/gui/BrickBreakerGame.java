@@ -3,6 +3,7 @@ package gui;
 import gamepieces.Ball;
 import gamepieces.Brick;
 import gamepieces.Paddle;
+import gamepieces.Star;
 import main.SaveLoad;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class BrickBreakerGame {
+class BrickBreakerGame {
 
     // Game Engine
     private EngineRender renderer;
@@ -22,18 +23,20 @@ public class BrickBreakerGame {
     private Paddle playerPaddle;
     private Ball ball;
     private Brick[][] brick;
+    private Star[][] stars = new Star[20][3];
 
     private final int ROWS_OF_BRICKS = 5;
     private final int COLS_OF_BRICKS = 10;
 
     final Color[] colors = {Color.RED, Color.PINK, Color.CYAN, Color.GREEN, Color.YELLOW};
 
-    public boolean isActive = true;
+    private boolean isActive = true;
 
     BrickBreakerGame(Canvas gameCanvas) {
         this.gameCanvas = gameCanvas;
         renderer = new EngineRender(gameCanvas);
 
+        initBackground();
         restart(true);
 
         Timer gameTimer = new Timer(1000/FPS, new ActionListener() {
@@ -52,6 +55,9 @@ public class BrickBreakerGame {
     }
 
     private void tick() {
+        // Updates background
+        moveStars();
+
         // Update paddle location
         movePaddle();
         playerPaddle.translatePosition((int) playerPaddle.dx,0);
@@ -62,6 +68,16 @@ public class BrickBreakerGame {
             ball.translatePosition();
         } else { // Handle movement if connected to paddle
             ball.translatePosition((int) playerPaddle.dx, 0);
+        }
+    }
+
+    private void moveStars() {
+        for (int i = 0; i < stars.length; i++) {
+            for (int x = 0; x < stars[i].length; x++) {
+                stars[i][x].translatePosition(0,(x+1));
+                if (stars[i][x].getY() >= gameCanvas.getHeight())
+                    stars[i][x].translatePosition(0,-gameCanvas.getHeight());
+            }
         }
     }
 
@@ -153,6 +169,7 @@ public class BrickBreakerGame {
     }
 
     private void render() {
+        renderer.updateBackground(stars);
         renderer.renderScreen(playerPaddle,ball,brick);
     }
 
@@ -180,6 +197,12 @@ public class BrickBreakerGame {
         if (playerPaddle.score % 50 == 0) {
            initBricks();
         }
+    }
+
+    private void initBackground() {
+        for (int i = 0; i < stars.length; i++)
+            for (int x = 0; x < stars[i].length; x++)
+                stars[i][x] = new Star(gameCanvas);
     }
 
     /**
@@ -228,19 +251,16 @@ public class BrickBreakerGame {
         }
     }
 
-    public void pause() {
+    private void pause() {
         isActive = false;
     }
 
-    public void unpause() {
+    void unpause() {
         isActive = true;
     }
 
-    public void pausing() {
-        if (isActive)
-            isActive = false;
-        else
-            isActive = true;
+    void pausing() {
+        isActive = !isActive;
     }
 
     void growSize() {
